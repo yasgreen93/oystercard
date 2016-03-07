@@ -7,4 +7,9 @@ describe Oystercard do
     expect(card.balance).to be_zero
   end
 
+  describe '#top_up' do
+    it 'should top up with the provided credit' do
+      expect{ card.top_up 1 }.to change{ card.balance }.by 1
+    end
+  end
 end
