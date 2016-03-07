@@ -11,6 +11,11 @@ class Oystercard
     @balance += cash
   end
 
+  def deduct cash
+    @balance -= cash
+  end
+
+  private
   def within_limit(cash)
     message = "Limit of #{MAX_LIMIT} exceeded"
     raise message if (balance + cash) > MAX_LIMIT

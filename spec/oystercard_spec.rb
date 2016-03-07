@@ -22,4 +22,10 @@ describe Oystercard do
       expect{ card.top_up (max_limit + 1) }.to raise_error message
     end
   end
+  
+  describe '#deduct' do
+    it 'deducts the appropriate fare' do
+      expect{ card.deduct 1 }.to change{ card.balance }.by -1
+    end
+  end
 end
