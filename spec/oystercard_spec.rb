@@ -7,6 +7,7 @@ describe Oystercard do
   describe '#balance'do
     it { expect(oystercard).to respond_to(:balance) }
     it { expect(oystercard).to respond_to(:top_up).with(1).argument }
+    it { expect(oystercard).to respond_to(:deduct).with(1).argument }
 
     it "expect balance to be 0" do
       expect(oystercard.balance).to eq 0
@@ -22,4 +23,9 @@ describe Oystercard do
       expect{ oystercard.top_up(95) }.to raise_error described_class::MAX_ERROR
     end
   end
+
+  describe '#deduct' do
+    it {expect{oystercard.deduct 5}.to change{oystercard.balance}.by -5}
+  end
+
 end
