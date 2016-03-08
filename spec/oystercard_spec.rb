@@ -16,7 +16,7 @@ describe Oystercard do
     end
 
     it '> should be initialized with journeys' do
-      expect(oystercard.journeys).to eq ({})
+      expect(oystercard.journeys).to eq ([])
     end
 
   end
@@ -57,6 +57,19 @@ describe Oystercard do
       expect(oystercard.station).to eq(dummy_station)
     end
 
+    it '> should charge a penalty fare when not touched out' do
+      oystercard.top_up(Oystercard::PENALTY_FARE)
+      2.times{oystercard.touch_in(dummy_station)}
+      expect(oystercard.balance).to eq(0)
+
+    end
+
+    xit '> should create a penalty journey if touched in while still in journey' do
+      oystercard.top_up(Oystercard::MINIMUM_FARE)
+      oystercard.touch_in(dummy_station)
+      except{oystercard.touch_in(dummy_station)}.to raise_error "Insufficient balance to touch in."
+    end
+
   end
 
   describe '#touch_out' do
@@ -70,8 +83,6 @@ describe Oystercard do
     end
 
     it '> should deduct the minimum fare when touched out' do
-      # oystercard.touch_out(dummy_station2)
-      # expect{oystercard.touch_in(dummy_station)}.to raise_error "Insufficient balance to touch in."
       expect{oystercard.touch_out(dummy_station2)}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
     end
 
@@ -84,12 +95,6 @@ describe Oystercard do
       oystercard.touch_in(dummy_station)
       oystercard.touch_out(dummy_station2)
       expect(oystercard.station).to be nil
-    end
-
-    it '> should store the stations in the journey history' do
-      oystercard.touch_in(dummy_station)
-      oystercard.touch_out(dummy_station2)
-      expect(oystercard.journeys).to eq({dummy_station => dummy_station2})
     end
 
   end

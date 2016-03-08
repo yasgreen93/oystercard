@@ -6,7 +6,7 @@ MINIMUM_FARE = 1
   def initialize
     @station = nil
     @balance = 0
-    @journeys = {}
+    @journeys = []
   end
 
   def top_up(cash)
@@ -15,13 +15,14 @@ MINIMUM_FARE = 1
   end
 
   def touch_in(station_name)
+    #journey.add_frist_station(fwjju)
     raise "Insufficient balance to touch in." if not_enough?
     change_station(station_name)
   end
 
   def touch_out(station_name)
+    log_journey(station_name)
     deduct MINIMUM_FARE
-    add_journey_history(station_name)
     change_station nil
   end
 
@@ -33,8 +34,9 @@ MINIMUM_FARE = 1
 
 private
 
-  def add_journey_history(station_name)
-    @journeys[@station] = station_name
+  def log_journey(station_name)
+     current_journey = Journey.new(@station, station_name)
+     @journeys << current_journey
   end
 
   def change_station(station_name)
