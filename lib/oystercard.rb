@@ -22,6 +22,7 @@ MINIMUM_FARE = 1
 
   def touch_out
     deduct MINIMUM_FARE
+    change_station nil
     @in_journey = false
   end
 
