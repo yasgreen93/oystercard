@@ -22,10 +22,31 @@ describe Oystercard do
       expect{ card.top_up (max_limit + 1) }.to raise_error message
     end
   end
-  
+
   describe '#deduct' do
     it 'deducts the appropriate fare' do
       expect{ card.deduct 1 }.to change{ card.balance }.by -1
+    end
+  end
+
+  describe '#in_journey?' do
+    it 'should not be in journey on initialization' do
+      expect(card).not_to be_in_journey
+    end
+  end
+
+  describe '#touch_in' do
+    it 'should change the status of the card to in_journey' do
+      card.touch_in
+      expect(card).to be_in_journey
+    end
+  end
+
+  describe '#touch_out' do
+    it 'should change the status of the card to not be in_journey' do
+      card.touch_in
+      card.touch_out
+      expect(card).not_to be_in_journey
     end
   end
 end
