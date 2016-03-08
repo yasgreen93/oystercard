@@ -6,7 +6,6 @@ MINIMUM_FARE = 1
   def initialize
     @station = nil
     @balance = 0
-    @in_journey = false
   end
 
   def top_up(cash)
@@ -17,19 +16,17 @@ MINIMUM_FARE = 1
   def touch_in(station_name)
     raise "Insufficient balance to touch in." if not_enough?
     change_station(station_name)
-    @in_journey = true
   end
 
   def touch_out
     deduct MINIMUM_FARE
     change_station nil
-    @in_journey = false
   end
 
   attr_reader :balance, :station
 
   def in_journey?
-    @in_journey
+    !@station.nil?
   end
 
 private
