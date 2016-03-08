@@ -1,6 +1,6 @@
 class Oystercard
 
-  attr_reader :balance, :entry_station, :journeys
+  attr_reader :balance, :journeys
   MIN_BALANCE = 1
   MAX_BALANCE = 90
   MAX_ERROR = "Top up exceeds card's maximum balance of £#{MAX_BALANCE}."
@@ -18,22 +18,19 @@ class Oystercard
 
   def touch_in(station)
     raise MIN_ERROR if @balance < MIN_BALANCE
-    @entry_station = station
+    @current_journey = {}
+    @current_journey[:entry_station] = station
   end
 
   def touch_out(station)
     deduct(MIN_BALANCE)
-    journey = {}
-    journey[:entry_station] = @entry_station
-    journey[:exit_station] = station
-    p journey
-    @journeys << journey
-    p @journeys
-    @entry_station = nil
+    @current_journey[:exit_station] = station
+    @journeys << @current_journey
+    @current_journey = nil
   end
 
   def in_journey?
-    !@entry_station.nil?
+    !@current_journey.nil?
   end
 
   private
