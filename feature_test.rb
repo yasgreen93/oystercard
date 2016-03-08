@@ -9,3 +9,5 @@ oystercard.touch_out('im hungry staton')
 
 p oystercard.journeys
 p oystercard.balance
+
+aldgate = Station.new
