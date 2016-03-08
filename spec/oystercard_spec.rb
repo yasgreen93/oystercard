@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard){ described_class.new }
+  let(:dummy_station) {:station_name}
 
   describe '#initialize' do
 
@@ -33,13 +34,18 @@ describe Oystercard do
     before{oystercard.top_up(Oystercard::MINIMUM_FARE)}
 
     it '> should set card to in use when touched in' do
-      oystercard.touch_in
+      oystercard.touch_in(dummy_station)
       expect(oystercard.in_journey?).to eq(true)
     end
 
     it '> should not let you touch in when balance less than minimum fare' do
       oystercard.touch_out
-      expect{oystercard.touch_in}.to raise_error "Insufficient balance to touch in."
+      expect{oystercard.touch_in(dummy_station)}.to raise_error "Insufficient balance to touch in."
+    end
+
+    it '> should change the station status to the station it touches into' do
+      oystercard.touch_in(dummy_station)
+      expect(oystercard.station).to eq(dummy_station)
     end
 
   end
@@ -49,14 +55,14 @@ describe Oystercard do
     before{oystercard.top_up(Oystercard::MINIMUM_FARE)}
 
     it '> should set a card to out of use when touched out' do
-      oystercard.touch_in
+      oystercard.touch_in(dummy_station)
       oystercard.touch_out
       expect(oystercard.in_journey?).to eq(false)
     end
 
     it '> should deduct the minimum fare when touched out' do
       # oystercard.touch_out
-      # expect{oystercard.touch_in}.to raise_error "Insufficient balance to touch in."
+      # expect{oystercard.touch_in(dummy_station)}.to raise_error "Insufficient balance to touch in."
       expect{oystercard.touch_out}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
     end
 
