@@ -15,10 +15,19 @@ describe Oystercard do
       expect(oystercard.balance).to eq -5
     end
 
-
-
     it "should raise error when exceeding max balance" do
       expect{oystercard.top_up(95)}.to raise_error described_class::MAX_ERROR
     end
+
+    it "can touch in" do
+      oystercard.touch_in
+      expect(oystercard).to be_in_journey
+    end
+
+    it "can touch out" do
+      oystercard.touch_out
+      expect(oystercard).to_not be_in_journey
+    end
+
   end
 end
