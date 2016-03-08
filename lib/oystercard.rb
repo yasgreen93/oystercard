@@ -1,6 +1,7 @@
 class Oystercard
 
 MAXIMUM_TOPUP = 90
+MINIMUM_FARE = 1
 
   def initialize
     @balance = 0
@@ -8,7 +9,7 @@ MAXIMUM_TOPUP = 90
   end
 
   def top_up(cash)
-    raise "Maximum limit is 90 pounds" if reached_max?(cash)
+    raise "Maximum limit is #{MAXIMUM_TOPUP} pounds" if reached_max?(cash)
     @balance += cash
   end
 
@@ -17,6 +18,7 @@ MAXIMUM_TOPUP = 90
   end
 
   def touch_in
+    raise "Insufficient balance to touch in." if not_enough?
     @in_journey = true
   end
 
@@ -34,6 +36,10 @@ private
 
   def reached_max?(cash)
     @balance + cash > MAXIMUM_TOPUP
+  end
+
+  def not_enough?
+    @balance < MINIMUM_FARE
   end
 
 end
