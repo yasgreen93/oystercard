@@ -12,7 +12,6 @@ describe Oystercard do
 
   describe '#top_up' do
     it {expect{oystercard.top_up 5}.to change{oystercard.balance}.by 5}
-
     it {expect{ oystercard.top_up(95) }.to raise_error described_class::MAX_ERROR}
   end
 
@@ -21,11 +20,16 @@ describe Oystercard do
   end
 
   describe '#touch_in' do
-    it {expect{oystercard.touch_in}.to change{oystercard.in_journey?}.from(false).to(true)}
+    it 'changes in_journey? from false to true when balance sufficient' do
+      oystercard.top_up(described_class::MIN_BALANCE)
+      expect{oystercard.touch_in}.to change{oystercard.in_journey?}.from(false).to(true)
+    end
+    it {expect{oystercard.touch_in}.to raise_error described_class::MIN_ERROR}
   end
 
   describe '#touch_out' do
     it "changes in_journey from true to false" do
+      oystercard.top_up(described_class::MIN_BALANCE)
       oystercard.touch_in
       expect{oystercard.touch_out}.to change{oystercard.in_journey?}.from(true).to(false)
     end

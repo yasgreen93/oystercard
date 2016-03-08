@@ -19,7 +19,12 @@ describe Oystercard do
       expect{oystercard.top_up(95)}.to raise_error described_class::MAX_ERROR
     end
 
-    it "can touch in" do
+    it "raises an error if insufficient balance at touch_in" do
+        expect{oystercard.touch_in}.to raise_error described_class::MIN_ERROR
+    end
+
+    it "can touch in when balance sufficient" do
+      oystercard.top_up(described_class::MIN_BALANCE)
       oystercard.touch_in
       expect(oystercard).to be_in_journey
     end
@@ -28,6 +33,7 @@ describe Oystercard do
       oystercard.touch_out
       expect(oystercard).to_not be_in_journey
     end
+
 
   end
 end
