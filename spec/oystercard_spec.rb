@@ -3,7 +3,8 @@ require 'oystercard'
 describe Oystercard do
   subject(:card) { described_class.new }
   max_limit = Oystercard::MAX_LIMIT
-  let(:entry_station) {double :station}
+  let(:entry_station) {double :entry_station}
+  let(:exit_station) {double :exit_station}
 
   it 'should initialize with a balance of 0' do
     expect(card.balance).to be_zero
@@ -53,20 +54,33 @@ describe Oystercard do
     it 'should change the status of the card to not be in_journey' do
       card.top_up(5)
       card.touch_in(entry_station)
-      card.touch_out
+      card.touch_out(exit_station)
       expect(card).not_to be_in_journey
     end
 
     it 'should reduce the balance by minimum fare' do
       card.top_up(5)
       card.touch_in(entry_station)
-      expect{ card.touch_out }.to change{ card.balance }.by(-1)
+      expect{ card.touch_out(exit_station) }.to change{ card.balance }.by(-1)
     end
 
     it 'should forget entry station when touched out' do
     	card.top_up(5)
       card.touch_in(entry_station)
-     expect{ card.touch_out }.to change{ card.entry_station}.to nil
+     expect{ card.touch_out(exit_station) }.to change{ card.entry_station}.to nil
+    end
+  end
+
+  describe 'journeys' do
+    it 'should have an empty list of journeys by default' do
+      expect(card.journeys).to be_empty
+    end
+
+    it 'should create one journey after touching in and out' do
+      card.top_up(5)
+      card.touch_in(entry_station)
+      card.touch_out(exit_station)
+      expect(card.journeys).to eq [{entry_station => exit_station}]
     end
   end
 end
