@@ -1,3 +1,5 @@
+require_relative 'station'
+
 class Oystercard
   MAX_LIMIT = 90
   MIN_LIMIT = 1
