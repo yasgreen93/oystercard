@@ -1,5 +1,6 @@
 class Oystercard
   MAX_LIMIT = 90
+  MIN_LIMIT = 1
   attr_reader :balance
 
   def initialize
@@ -21,6 +22,7 @@ class Oystercard
   end
 
   def touch_in
+     insufficient_funds
     @in_journey = true
   end
 
@@ -32,6 +34,11 @@ class Oystercard
   def within_limit(cash)
     message = "Limit of #{MAX_LIMIT} exceeded"
     raise message if (balance + cash) > MAX_LIMIT
+  end
+
+  def insufficient_funds
+    message = "You have an insufficicent balance"
+    raise message if balance < MIN_LIMIT
   end
 
 end

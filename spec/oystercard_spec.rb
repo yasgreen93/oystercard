@@ -37,13 +37,20 @@ describe Oystercard do
 
   describe '#touch_in' do
     it 'should change the status of the card to in_journey' do
+      card.top_up(5)
       card.touch_in
       expect(card).to be_in_journey
+    end
+
+    it 'raise error when touched in with insufficient balance' do
+    	message = "You have an insufficicent balance"
+    	expect{card.touch_in}.to raise_error message
     end
   end
 
   describe '#touch_out' do
     it 'should change the status of the card to not be in_journey' do
+      card.top_up(5)
       card.touch_in
       card.touch_out
       expect(card).not_to be_in_journey
