@@ -26,7 +26,7 @@ describe Oystercard do
     #   expect(oystercard).to be_in_journey
     # end
 
-    let(:station){double(:String)}
+    let(:station){double(:station)}
     it "saves station name on touch_in" do
       oystercard.top_up(described_class::MIN_BALANCE)
       oystercard.touch_in(station)
@@ -42,8 +42,14 @@ describe Oystercard do
 
     it "deducts MIN_BALANCE on touch out" do
       oystercard.top_up(described_class::MIN_BALANCE)
-      expect{oystercard.touch_out}.to change{oystercard.balance}.by(-described_class::MIN_BALANCE)
+      expect{oystercard.touch_out(station)}.to change{oystercard.balance}.by(-described_class::MIN_BALANCE)
     end
 
+    pending ("refactoring for journey history") do
+      oystercard.touch_in("Piccadilly")
+      oystercard.touch_out("Green Park")
+      p oystercard.journeys
+      # [:entry => "Piccadilly", :exit => "Green Park"]
+    end
   end
 end
