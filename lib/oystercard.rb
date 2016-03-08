@@ -48,7 +48,7 @@ class Oystercard
   end
 
   def record_journey
-    journey = {@entry_station => @exit_station}
+    journey = {:entry_station=> @entry_station, :exit_station => @exit_station}
     @journeys << journey
   end
 

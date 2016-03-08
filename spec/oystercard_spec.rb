@@ -5,6 +5,7 @@ describe Oystercard do
   max_limit = Oystercard::MAX_LIMIT
   let(:entry_station) {double :entry_station}
   let(:exit_station) {double :exit_station}
+  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
 
   it 'should initialize with a balance of 0' do
     expect(card.balance).to be_zero
@@ -80,7 +81,7 @@ describe Oystercard do
       card.top_up(5)
       card.touch_in(entry_station)
       card.touch_out(exit_station)
-      expect(card.journeys).to eq [{entry_station => exit_station}]
+      expect(card.journeys).to include journey
     end
   end
 end
