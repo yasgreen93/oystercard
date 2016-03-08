@@ -7,5 +7,5 @@ oystercard.top_up(50)
 oystercard.touch_in('pepper station')
 oystercard.touch_out('im hungry staton')
 
-oystercard.journeys
-oystercard.balance
+p oystercard.journeys
+p oystercard.balance
