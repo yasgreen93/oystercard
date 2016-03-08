@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/robota/propro/oystercard/spec/oystercard_spec.rb": [
+      "/Users/erikapheby/Projects/oystercard/spec/oystercard_spec.rb": [
         1,
         null,
         1,
@@ -100,7 +100,7 @@
         null,
         null
       ],
-      "/Users/robota/propro/oystercard/lib/oystercard.rb": [
+      "/Users/erikapheby/Projects/oystercard/lib/oystercard.rb": [
         1,
         null,
         1,
@@ -158,7 +158,7 @@
         null,
         null
       ],
-      "/Users/robota/propro/oystercard/spec/station_spec.rb": [
+      "/Users/erikapheby/Projects/oystercard/spec/station_spec.rb": [
         1,
         null,
         1,
@@ -181,7 +181,7 @@
         null,
         null
       ],
-      "/Users/robota/propro/oystercard/lib/station.rb": [
+      "/Users/erikapheby/Projects/oystercard/lib/station.rb": [
         1,
         null,
         1,
@@ -194,6 +194,6 @@
         null
       ]
     },
-    "timestamp": 1457447637
+    "timestamp": 1457447884
   }
 }
