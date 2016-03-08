@@ -6,6 +6,7 @@ MINIMUM_FARE = 1
   def initialize
     @station = nil
     @balance = 0
+    @journeys = {}
   end
 
   def top_up(cash)
@@ -18,18 +19,23 @@ MINIMUM_FARE = 1
     change_station(station_name)
   end
 
-  def touch_out
+  def touch_out(station_name)
     deduct MINIMUM_FARE
+    add_journey_history(station_name)
     change_station nil
   end
 
-  attr_reader :balance, :station
+  attr_reader :balance, :station, :journeys
 
   def in_journey?
     !@station.nil?
   end
 
 private
+
+  def add_journey_history(station_name)
+    @journeys[@station] = station_name
+  end
 
   def change_station(station_name)
     @station = station_name
