@@ -3,7 +3,7 @@ require 'oystercard'
 describe Oystercard do
   subject(:oystercard){ described_class.new }
 
-  describe 'initialize' do
+  describe '#initialize' do
 
     it '> should be initialized with a balance of 0' do
       expect(oystercard.balance).to eq(0)
@@ -15,7 +15,7 @@ describe Oystercard do
     it{is_expected.to_not be_in_journey}
   end
 
-  describe 'top_up' do
+  describe '#top_up' do
     it '> should top up the amount specified' do
       oystercard.top_up(5)
       expect(oystercard.balance).to eq(5)
@@ -27,16 +27,8 @@ describe Oystercard do
 
   end
 
-  describe 'deduct' do
 
-    it '> should deduct from the balance the amount specified' do
-      oystercard.top_up(5)
-      expect(oystercard.deduct(4)).to eq(1)
-    end
-
-  end
-
-  describe 'touch_in' do
+  describe '#touch_in' do
 
     before{oystercard.top_up(Oystercard::MINIMUM_FARE)}
 
@@ -46,13 +38,13 @@ describe Oystercard do
     end
 
     it '> should not let you touch in when balance less than minimum fare' do
-      oystercard.deduct(Oystercard::MINIMUM_FARE)
+      oystercard.touch_out
       expect{oystercard.touch_in}.to raise_error "Insufficient balance to touch in."
     end
 
   end
 
-  describe 'touch_out' do
+  describe '#touch_out' do
 
     before{oystercard.top_up(Oystercard::MINIMUM_FARE)}
 
@@ -60,6 +52,12 @@ describe Oystercard do
       oystercard.touch_in
       oystercard.touch_out
       expect(oystercard.in_journey?).to eq(false)
+    end
+
+    it '> should deduct the minimum fare when touched out' do
+      # oystercard.touch_out
+      # expect{oystercard.touch_in}.to raise_error "Insufficient balance to touch in."
+      expect{oystercard.touch_out}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
     end
 
   end

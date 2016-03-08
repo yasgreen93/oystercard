@@ -13,16 +13,13 @@ MINIMUM_FARE = 1
     @balance += cash
   end
 
-  def deduct(cash)
-    @balance -= cash
-  end
-
   def touch_in
     raise "Insufficient balance to touch in." if not_enough?
     @in_journey = true
   end
 
   def touch_out
+    deduct MINIMUM_FARE
     @in_journey = false
   end
 
@@ -40,6 +37,10 @@ private
 
   def not_enough?
     @balance < MINIMUM_FARE
+  end
+
+  def deduct(cash)
+    @balance -= cash
   end
 
 end
