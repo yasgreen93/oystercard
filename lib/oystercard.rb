@@ -1,3 +1,5 @@
+require 'journey'
+
 class Oystercard
 
   attr_reader :balance, :journeys
@@ -18,19 +20,14 @@ class Oystercard
 
   def touch_in(station)
     raise MIN_ERROR if @balance < MIN_BALANCE
-    @current_journey = {}
-    @current_journey[:entry_station] = station
+    @current_journey = Journey.new(station)
   end
 
   def touch_out(station)
     deduct(MIN_BALANCE)
-    @current_journey[:exit_station] = station
+    @current_journey.end_journey(station)
     @journeys << @current_journey
     @current_journey = nil
-  end
-
-  def in_journey?
-    !@current_journey.nil?
   end
 
   private
