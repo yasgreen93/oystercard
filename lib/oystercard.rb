@@ -10,6 +10,10 @@ MINIMUM_FARE = 1
     @journey = journey_class.new(nil, nil)
   end
 
+  def journeys
+    @journeys.dup
+  end
+
   def top_up(cash)
     raise "Maximum limit is #{MAXIMUM_TOPUP} pounds" if reached_max?(cash)
     @balance += cash

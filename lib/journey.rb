@@ -6,9 +6,9 @@ class Journey
 
   attr_reader :start_station, :end_station
 
-  def initialize(start_station, end_station)
+  def initialize(start_station=nil)
     @start_station = start_station
-    @end_station = end_station
+    @end_station = nil
   end
 
   def compute_fare
@@ -16,8 +16,7 @@ class Journey
     MINIMUM_FARE
   end
 
-  def change_journey(start_station, end_station)
-    @start_station = start_station
+  def add_exit_station(end_station)
     @end_station = end_station
   end
 
