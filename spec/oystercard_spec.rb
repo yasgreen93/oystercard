@@ -2,18 +2,23 @@ require 'oystercard'
 require 'journey'
 
 describe Oystercard do
-  subject(:oystercard){ described_class.new(Journey) }
   let(:dummy_station) { double :station }
+  let(:journey_log_class) {double :journey_log_class, new: journey_log}
+  let(:journey_log) {double :journey_log}
+  let(:journey_class) {double :journey_class, new: journey}
+  let(:journey) {double :journey}
+  subject(:oystercard){ described_class.new(journey_log_class, journey_class) }
+
+  before do
+    allow(journey_log).to receive(:start).with(dummy_station).and_return(true)
+    allow(journey_log).to receive(:finish).with(dummy_station).and_return(true)
+  end
 
 
   describe '#initialize' do
 
     it '> should be initialized with a balance of 0' do
       expect(oystercard.balance).to eq(0)
-    end
-
-    it '> should be initialized with a journey log' do
-      expect(oystercard.journeys).to eq ([])
     end
 
     it{is_expected.to_not be_in_journey}
@@ -89,12 +94,6 @@ describe Oystercard do
       oystercard.touch_in(dummy_station)
       oystercard.touch_out(dummy_station)
       expect(oystercard).not_to be_in_journey
-    end
-
-    it '> should change the journey when touched out' do
-      oystercard.touch_in(dummy_station)
-      oystercard.touch_out(dummy_station)
-      expect(oystercard.journeys).to eq([oystercard.journey])
     end
 
     it '> should deduct a penalty fare when touching out twice' do

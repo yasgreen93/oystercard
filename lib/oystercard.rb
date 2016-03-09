@@ -2,16 +2,13 @@ class Oystercard
 
 MAXIMUM_TOPUP = 90
 MINIMUM_FARE = 1
+PENALTY_FARE = 6
 
-  def initialize(journey_class)
+  def initialize(journey_log_class, journey_class=Journey)
     @station = nil
     @balance = 0
-    @journeys = []
-    @journey = journey_class.new(nil, nil)
-  end
-
-  def journeys
-    @journeys.dup
+    @journey_class = journey_class
+    @journey_log = journey_log_class.new(journey_class)
   end
 
   def top_up(cash)
@@ -20,16 +17,16 @@ MINIMUM_FARE = 1
   end
 
   def touch_in(station_name)
-    create_journey(station_name, nil) if same_station?(station_name)
-    deduct(@journey.class::PENALTY_FARE) if same_station?(station_name)
-    raise "Insufficient balance to touch in." if not_enough?
+    @journey_log.start(station_name)
+    deduct(PENALTY_FARE) if same_station?(station_name)
     change_station(station_name)
+    raise "Insufficient balance to touch in." if not_enough?
+
   end
 
   def touch_out(station_name)
-    create_journey(@station, station_name)
-    deduct(@journey.class::PENALTY_FARE) if @station == nil
-    deduct MINIMUM_FARE unless @station == nil
+    @journey_log.finish(station_name)
+    @station == nil ? deduct(PENALTY_FARE) : deduct(MINIMUM_FARE)
     change_station nil
   end
 
@@ -40,10 +37,6 @@ MINIMUM_FARE = 1
   end
 
 private
-
-  def create_journey
-
-  end
 
   def change_station(station_name)
     @station = station_name
