@@ -8,18 +8,17 @@ class JourneyLog
   end
 
   def list_journeys
-    @journey.dup
+    @journeys.dup
   end
 
   def start(start_station)
     @current_journey = @journey_class.new(start_station)
-    @journeys << @current_journey
+    log_journey
   end
 
   def finish(end_station)
-    @journeys.pop
     @current_journey.add_exit_station(end_station)
-    @journeys << @current_journey
+    log_journey
     @current_journey = nil
   end
 
@@ -27,6 +26,11 @@ class JourneyLog
 
   def current_journey
     @current_journey || journey_class.new
+  end
+
+  def log_journey
+    @journeys.pop if @current_journey.exiting?
+    @journeys << @current_journey
   end
 
 end

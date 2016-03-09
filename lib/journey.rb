@@ -20,6 +20,10 @@ class Journey
     @end_station = end_station
   end
 
+  def exiting?
+    @end_station != nil
+  end
+
 private
 
   def incomplete_journey?

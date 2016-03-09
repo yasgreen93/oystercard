@@ -6,20 +6,25 @@ describe JourneyLog do
   let(:journey_class) {double :journey_class, new: journey}
   let(:journey) {double :journey}
 
+  before{allow(journey).to receive(:add_exit_station).and_return true}
+
   describe '#start' do
     it 'records a journey' do
       allow(journey_class).to receive(:new).and_return journey
+      allow(journey).to receive(:exiting?).and_return false
       journeylog.start(station)
-      expect(journeylog.journeys).to include journey
+      expect(journeylog.list_journeys).to include journey
     end
   end
 
   describe '#finish' do
     it 'should add an exit station to the current_journey' do
       allow(journey_class).to receive(:new).and_return journey
+      allow(journey).to receive(:exiting?).and_return false
       journeylog.start(station)
+      allow(journey).to receive(:exiting?).and_return true
       journeylog.finish(station)
-      expect(list_journeys).to include journey
+      expect(journeylog.list_journeys).to include journey
     end
   end
 

@@ -41,9 +41,8 @@ MINIMUM_FARE = 1
 
 private
 
-  def create_journey(entry_station, exit_station)
-     @journey.change_journey(entry_station, exit_station)
-     @journeys << @journey
+  def create_journey
+
   end
 
   def change_station(station_name)
