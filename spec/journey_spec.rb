@@ -21,17 +21,17 @@ describe Journey do
   describe '#compute_fare' do
 
     it 'return a fare when a full journey is completed' do
-      expect(journey.compute_fare).to eq(1)
+      expect(journey.compute_fare).to eq(Journey::MINIMUM_FARE)
     end
 
     it 'return a penalty fare when a journey has no beginning' do
       journey = described_class.new nil_station , end_station
-      expect(journey.compute_fare).to eq(6)
+      expect(journey.compute_fare).to eq(Journey::PENALTY_FARE)
     end
 
     it 'returns a penalty fare when a journey has no end' do
       journey = described_class.new start_station , nil_station
-      expect(journey.compute_fare).to eq(6)
+      expect(journey.compute_fare).to eq(Journey::PENALTY_FARE)
     end
 
   end

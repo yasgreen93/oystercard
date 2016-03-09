@@ -32,3 +32,18 @@ test_journey = Journey.new (station1, station2)
 
 oystercard.touch_in(:oxfordcircus)
 oystercard.touch_out(:hackney)
+
+require './lib/oystercard.rb'
+require './lib/station.rb'
+require './lib/journey.rb'
+
+oystercard = Oystercard.new(Journey)
+
+aldgate = Station.new :aldgate, 1
+liverpoolstreet = Station.new :liverpoolstreet, 1
+
+oystercard.top_up(15)
+oystercard.touch_in(aldgate)
+oystercard.touch_out(liverpoolstreet)
+
+p oystercard.journeys

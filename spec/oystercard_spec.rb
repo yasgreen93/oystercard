@@ -1,7 +1,8 @@
 require 'oystercard'
+require 'journey'
 
 describe Oystercard do
-  subject(:oystercard){ described_class.new }
+  subject(:oystercard){ described_class.new(Journey) }
   let(:dummy_station) { double :station }
 
 
@@ -36,11 +37,14 @@ describe Oystercard do
 
   describe '#touch_in' do
 
-    before{oystercard.top_up(Oystercard::MINIMUM_FARE)}
+    before do
+      oystercard.top_up(Oystercard::MINIMUM_FARE)
+    end
 
     it '> should not let you touch in when balance less than minimum fare' do
+      message = "Insufficient balance to touch in."
       oystercard.touch_out(dummy_station)
-      expect{oystercard.touch_in(dummy_station)}.to raise_error "Insufficient balance to touch in."
+      expect{oystercard.touch_in(dummy_station)}.to raise_error message
     end
 
     it '> should change the station status to the station it touches into' do
@@ -53,14 +57,25 @@ describe Oystercard do
       expect(oystercard).to be_in_journey
     end
 
+    it '> should deduct penalty fare when touching in twice' do
+      message = "Insufficient balance to touch in."
+      oystercard.top_up(Journey::PENALTY_FARE - Oystercard::MINIMUM_FARE)
+      oystercard.touch_in(dummy_station)
+      expect{oystercard.touch_in(dummy_station)}.to raise_error message
+    end
+
   end
 
 
   describe '#touch_out' do
 
-    before{oystercard.top_up(Oystercard::MINIMUM_FARE)}
+    before do
+      oystercard.top_up(Oystercard::MINIMUM_FARE)
+      allow(dummy_station).to receive(:same_station?).and_return(false)
+    end
 
-    it '> should deduct the minimum fare when touched out' do
+    it '> should deduct the minimum fare when touched out (legally)' do
+      oystercard.touch_in(dummy_station)
       expect{oystercard.touch_out(dummy_station)}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
     end
 
@@ -74,6 +89,19 @@ describe Oystercard do
       oystercard.touch_in(dummy_station)
       oystercard.touch_out(dummy_station)
       expect(oystercard).not_to be_in_journey
+    end
+
+    it '> should change the journey when touched out' do
+      oystercard.touch_in(dummy_station)
+      oystercard.touch_out(dummy_station)
+      expect(oystercard.journeys).to eq([oystercard.journey])
+    end
+
+    it '> should deduct a penalty fare when touching out twice' do
+      message = "Insufficient balance to touch in."
+      oystercard.top_up(Journey::PENALTY_FARE - Oystercard::MINIMUM_FARE)
+      oystercard.touch_out(dummy_station)
+      expect{oystercard.touch_in(dummy_station)}.to raise_error message
     end
 
   end
