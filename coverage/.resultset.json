@@ -153,6 +153,28 @@
         null,
         null
       ],
+      "/Users/claudiagreen/Google Drive/Makers/week2/oystercard/spec/journeylog_spec.rb": [
+        1,
+        null,
+        1,
+        null,
+        2,
+        2,
+        null,
+        null
+      ],
+      "/Users/claudiagreen/Google Drive/Makers/week2/oystercard/lib/journeylog.rb": [
+        null,
+        1,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null
+      ],
       "/Users/claudiagreen/Google Drive/Makers/week2/oystercard/spec/oystercard_spec.rb": [
         1,
         1,
@@ -223,7 +245,6 @@
         2,
         2,
         null,
-        null,
         null
       ],
       "/Users/claudiagreen/Google Drive/Makers/week2/oystercard/lib/station.rb": [
@@ -239,6 +260,6 @@
         null
       ]
     },
-    "timestamp": 1457628326
+    "timestamp": 1457630915
   }
 }
