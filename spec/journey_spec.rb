@@ -27,14 +27,15 @@ describe Journey do
   end
 
   describe "#fare" do
-    it "deducts minimum fare when journey completes" do
+    it "complete journey results in mininum fare" do
       journey = Journey.new("Euston")
       journey.end_journey("Bank")
       expect(journey.fare).to eq described_class::MIN_FARE
     end
-    it "deducts penalty fare when journey is incompelte" do
-      
-
+    it "incomplete journey results in pentalty fare" do
+      journey = Journey.new("Euston")
+      journey = Journey.new("Bank")
+      expect(journey.fare).to eq described_class::PENALTY_FARE
     end
   end
 

@@ -26,15 +26,33 @@ describe Oystercard do
     it {expect{oystercard.touch_in(entry_station)}.to raise_error described_class::MIN_ERROR}
   end
 
+  # describe '#touch_in' do
+  #
+  # end
+
   describe '#touch_out' do
     before do
       oystercard.top_up(described_class::MIN_BALANCE)
       oystercard.touch_in(entry_station)
     end
-    it {expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-described_class::MIN_BALANCE)}
     it "stores a record of journeys taken" do
       oystercard.touch_out(exit_station)
       expect(oystercard.journeys[0]).to be_a(Journey)
+    end
+    it 'reduces balance by minimum fare when journey is complete' do
+      expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-Journey::MIN_FARE)
+    end
+  end
+
+  describe '#balance' do
+    # it 'reduces balance by penalty fare when journey is incomplete' do
+    #   oystercard.top_up(described_class::MIN_BALANCE)
+    #   expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-Journey::PENALTY_FARE)
+    # end
+    it 'reduces balance by penalty fare when journey is incomplete' do
+      2.times{oystercard.top_up(described_class::MIN_BALANCE)}
+      oystercard.touch_in(entry_station)
+      expect{oystercard.touch_in(entry_station)}.to change{oystercard.balance}.by(-Journey::PENALTY_FARE)
     end
   end
 
