@@ -4,6 +4,8 @@ require 'oystercard'
 describe Journey do
 
   subject(:journey) { described_class.new }
+  let(:entry_station){double(:station)}
+  let(:exit_station){double(:station)}
 
   it {is_expected.to respond_to(:exit_station)}
   it {is_expected.to respond_to(:entry_station)}
@@ -25,18 +27,4 @@ describe Journey do
       expect(journey.end_journey(:exit_station)).to eq :exit_station
     end
   end
-
-  describe "#fare" do
-    it "complete journey results in mininum fare" do
-      journey = Journey.new("Euston")
-      journey.end_journey("Bank")
-      expect(journey.fare).to eq described_class::MIN_FARE
-    end
-    it "incomplete journey results in pentalty fare" do
-      journey = Journey.new("Euston")
-      journey = Journey.new("Bank")
-      expect(journey.fare).to eq described_class::PENALTY_FARE
-    end
-  end
-
 end

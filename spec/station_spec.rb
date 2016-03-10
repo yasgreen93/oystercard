@@ -8,5 +8,4 @@ describe Station do
     it {expect(station.name).to eq ("Bank")}
     it {expect(station.zone).to eq (1)}
   end
-
 end
