@@ -26,11 +26,14 @@ class Oystercard
 
   def touch_out(station)
     # If current_journey = nil, create new journey
-    # deduct(Journey.fare) if @current_journey == nil
-    # @current_journey = Journey.new("dummy") if @current_journey == nil
-
-    @current_journey.end_journey(station)
-    deduct(@current_journey.fare)
+    if @current_journey == nil
+      @current_journey = Journey.new(nil)
+      @current_journey.end_journey(station)
+      deduct(@current_journey.fare)
+    else
+      @current_journey.end_journey(station)
+      deduct(@current_journey.fare)
+    end
     @journeys << @current_journey
     @current_journey = nil
   end
