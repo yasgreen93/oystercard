@@ -28,9 +28,9 @@ describe Oystercard do
 
     it "saves single journey" do
       oystercard.top_up(described_class::MIN_BALANCE)
-      oystercard.touch_in(station_p)
-      oystercard.touch_out(station_gp)
-      expect(oystercard.journeys).to eq [journey]
+      oystercard.touch_in(entry_station)
+      oystercard.touch_out(exit_station)
+      expect(oystercard.journeys[0]).to be_a(Journey)
     end
   end
 end

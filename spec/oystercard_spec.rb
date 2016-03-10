@@ -1,4 +1,5 @@
 require 'oystercard'
+require 'journey'
 
 describe Oystercard do
 
@@ -21,11 +22,6 @@ describe Oystercard do
     it {expect{ oystercard.top_up(95) }.to raise_error described_class::MAX_ERROR}
   end
 
-  describe '#touch_in' do
-    before {oystercard.top_up(described_class::MIN_BALANCE)}
-    it {expect{oystercard.touch_in(entry_station)}.to change{oystercard.in_journey?}.from(false).to(true)}
-  end
-
   describe '#touch_in error' do
     it {expect{oystercard.touch_in(entry_station)}.to raise_error described_class::MIN_ERROR}
   end
@@ -35,16 +31,10 @@ describe Oystercard do
       oystercard.top_up(described_class::MIN_BALANCE)
       oystercard.touch_in(entry_station)
     end
-    it {expect{oystercard.touch_out(exit_station)}.to change{oystercard.in_journey?}.from(true).to(false)}
     it {expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-described_class::MIN_BALANCE)}
-
-
     it "stores a record of journeys taken" do
       oystercard.touch_out(exit_station)
-      journey = {}
-      journey[:entry_station] = entry_station
-      journey[:exit_station] = exit_station
-      expect(oystercard.journeys).to include(journey)
+      expect(oystercard.journeys[0]).to be_a(Journey)
     end
   end
 

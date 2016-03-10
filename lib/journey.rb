@@ -1,4 +1,4 @@
-require 'oystercard'
+
 
 class Journey
 
