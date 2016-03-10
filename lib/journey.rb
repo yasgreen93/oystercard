@@ -23,4 +23,8 @@ PENALTY_FARE = 6
     complete? ? MIN_FARE : PENALTY_FARE
   end
 
+  def exiting?
+    @exit_station != nil
+  end
+
 end

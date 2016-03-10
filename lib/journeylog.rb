@@ -1,4 +1,4 @@
-
+require_relative 'journey'
 class JourneyLog
 
   def initialize(journey_class)
@@ -17,7 +17,10 @@ class JourneyLog
   end
 
   def finish(exit_station)
-    @current_journey << exit_station
+    create_journey(nil) if not_touched_in?
+    @current_journey.end_journey(exit_station)
+    log_journey
+    @current_journey = nil
   end
 
   private
@@ -27,7 +30,12 @@ class JourneyLog
   end
 
   def log_journey
+    @journeys.pop if @current_journey.exiting?
     @journeys << @current_journey
+  end
+
+  def not_touched_in?
+    @current_journey == nil
   end
 
   def current_journey
