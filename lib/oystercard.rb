@@ -24,6 +24,7 @@ class Oystercard
   end
 
   def touch_out(station)
+    #If current_journey = nil, create new journey
     deduct(MIN_BALANCE)
     @current_journey.end_journey(station)
     @journeys << @current_journey
