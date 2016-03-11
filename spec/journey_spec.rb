@@ -27,4 +27,8 @@ describe Journey do
       expect(journey.end_journey(:exit_station)).to eq :exit_station
     end
   end
+
+  describe '#fare' do
+    
+  end
 end
