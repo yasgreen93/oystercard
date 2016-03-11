@@ -2,19 +2,15 @@ require 'oystercard'
 require 'journey'
 
 describe Oystercard do
+  let(:journey_log) { double :journey_log }
+  subject(:oystercard) { described_class.new(journey_log) }
+  let(:entry_station) { double(:station) }
+  let(:exit_station) { double(:station) }
 
-  subject(:oystercard) {described_class.new}
-  let(:entry_station){double(:station)}
-  let(:exit_station){double(:station)}
-
-  it {is_expected.to respond_to(:touch_in).with(1).argument}
-  it {is_expected.to respond_to(:touch_out).with(1).argument}
-  it {is_expected.to respond_to(:journeys)}
-
-  describe '#initialize'do
-
-    it {expect(oystercard.balance).to eq 0}
-    it {expect(oystercard.journeys).to be_empty}
+  describe '#initialize' do
+    it 'should start with a balance of 0' do
+      expect(oystercard.balance).to eq 0
+    end
   end
 
   describe '#top_up' do
@@ -30,12 +26,12 @@ describe Oystercard do
     before do
       oystercard.top_up(described_class::MIN_BALANCE)
       oystercard.touch_in(entry_station)
+
     end
-    it "stores a record of journeys taken" do
-      oystercard.touch_out(exit_station)
-      expect(oystercard.journeys[0]).to be_a(Journey)
-    end
+
+
     it 'reduces balance by minimum fare when journey is complete' do
+      allow(journey_log).to receive(:finish)
       expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-Journey::MIN_FARE)
     end
   end

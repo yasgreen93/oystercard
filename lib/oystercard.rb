@@ -9,9 +9,9 @@ class Oystercard
   MAX_ERROR = "Top up exceeds card's maximum balance of £#{MAX_BALANCE}."
   MIN_ERROR = "Cannot touch in if card's balance less than £#{MIN_BALANCE}"
 
-  def initialize
+  def initialize(journey_log)
     @balance = 0
-    @journey_log = JourneyLog.new(Journey) #=> MORE INDEPENDENCY
+    @journey_log = journey_log
   end
 
   def top_up(amount)
@@ -30,8 +30,6 @@ class Oystercard
     deduct
     @journey_log.reset
   end
-
-
 
   private
 
