@@ -18,7 +18,14 @@ PENALTY_FARE = 6
   end
 
   def fare
-    complete? ? MIN_FARE : PENALTY_FARE
+    complete? ? calculate : PENALTY_FARE
+  end
+
+  private
+
+  def calculate
+    return MIN_FARE if entry_station.zone == exit_station.zone
+    (entry_station.zone - exit_station.zone).abs + MIN_FARE
   end
 
 end
