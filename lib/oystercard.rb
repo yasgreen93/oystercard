@@ -21,36 +21,29 @@ class Oystercard
 
   def touch_in(station)
     raise MIN_ERROR if @balance < MIN_BALANCE
-    deduct if @journey_log.current_journey != nil
+    no_touch_out
     @journey_log.start(station)
   end
 
   def touch_out(station)
     @journey_log.finish(station)
     deduct
-
-    # @current_journey == nil ? didnt_touch_in(station) : did_touch_in(station)
-    # @journeys << @current_journey
-    # @current_journey = nil
+    @journey_log.reset
   end
 
 
 
   private
 
+  def no_touch_out
+    if @journey_log.current_journey != nil
+      deduct
+      @journey_log.no_touch_out
+    end
+  end
+
   def deduct
     @balance -= @journey_log.current_journey.fare
   end
-
-  # def didnt_touch_in(end_station)
-  #   @current_journey = Journey.new(nil)
-  #   @current_journey.end_journey(end_station)
-  #   deduct(@current_journey.fare)
-  # end
-  #
-  # def did_touch_in(end_station)
-  #   @current_journey.end_journey(end_station)
-  #   deduct(@current_journey.fare)
-  # end
 
 end
