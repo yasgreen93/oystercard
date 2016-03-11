@@ -1,4 +1,5 @@
 require_relative 'journey'
+require_relative 'journeylog'
 
 class Oystercard
 
@@ -11,6 +12,7 @@ class Oystercard
   def initialize
     @balance = 0
     @journeys = []
+    @journey_log = JourneyLog.new(Journey)
   end
 
   def top_up(amount)

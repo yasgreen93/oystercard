@@ -1,21 +1,20 @@
+require_relative 'journey'
 
 class JourneyLog
 
   def initialize(journey_class)
     @journey_class = journey_class
+    @current_journey = nil
   end
 
-  def start(entry_station)
-    @current_journey = @journey_class.new(entry_station)
+  def start(station)
+    @current_journey = @journey_class.new(station)
+
   end
 
-  def finish(exit_station)
-    @current_journey << exit_station
+  def finish(station)
+    @current_journey.end_journey(station)
   end
 
-  private
-
-  def current_journey
-  end
 
 end
